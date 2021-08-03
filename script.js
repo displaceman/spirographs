@@ -20,7 +20,7 @@ function setup() {
 
   for (let x = 0; x < 8; x++) {
     for (let y = 0; y < 8; y++) {
-      pg.fill(float(int((x%2==0)+(y%2==0)==1))*200);
+      pg.fill(float(int((x%2==0)+(y%2==1)==1))*150+50);
       pg.rect(x*size-sW*.5, y*size-sH*.5, size, size);
     }
   }
