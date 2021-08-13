@@ -3,31 +3,68 @@
 const sW = 800
 const sH = 800
 const sD = 800
-const size = sH/8
+
 let pg
 
-function setup() {
-  createCanvas(windowHeight, windowHeight)
-  pg = createGraphics(sW, sH, WEBGL) // Используйте этот класс, если вам нужно рисовать в внеэкранном графическом буфере.
+let углы = []
+let сдвиг_углов = []
+let длины_сегментов = []
 
-  pixelDensity(1) // масштабирование пикселей для дисплеев с высокой плотностью пикселей
-  noCursor() // Скрывает курсор
-  frameRate(60) // количество кадров в секунду
+let количество_сегментов = 12 
+let диапазон_сдвига_углов = 0.01
+let диапазон_длины_сегментов = 100
+let ширина_ленточки = 100
+let влияние_времени = 0.01
 
-  noStroke() // Отключает рисование обводки (контура)
-  fill(0, 15) // задает цвет
-  background(100) // цвет фона
 
-  for (let x = 0; x < 8; x++) {
-    for (let y = 0; y < 8; y++) {
-      pg.fill(float(int((x%2==0)+(y%2==1)==1))*150+50);
-      pg.rect(x*size-sW*.5, y*size-sH*.5, size, size);
-    }
-  }
-  
+for (let i = 0; i < количество_сегментов; i++) {
+  углы.push(Math.random()*Math.PI*2)
+  длины_сегментов.push(Math.random()*диапазон_длины_сегментов)
+  сдвиг_углов.push((Math.random()-0.5)*диапазон_сдвига_углов)
 }
 
+
+function col(n){
+  return int((sin(n)*0.5+0.5)*255)
+}
+
+function setup() {
+
+  createCanvas(windowHeight, windowHeight)
+
+  // noCursor() // Скрывает курсор
+  frameRate(60) // количество кадров в секунду
+  pixelDensity(1) // масштабирование пикселей для дисплеев с высокой плотностью пикселей
+  noStroke() // Отключает рисование обводки (контура)
+
+  pg = createGraphics(sW, sH, P2D) // Используйте этот класс, если вам нужно рисовать в внеэкранном графическом буфере.
+  pg.background(100) // цвет фона
+  pg.strokeWeight(1);
+
+}
+
+// function* range(from, to) {
+//   while (from < to) yield from++
+// } 
+
 function draw() {
+  let a = [sW*0.5, sH*0.5]
+  for (let i = 0; i < количество_сегментов; i++) {
+    a = [a[0]+Math.sin(углы[i])*длины_сегментов[i], a[1]+Math.cos(углы[i])*длины_сегментов[i]]
+    углы[i] += сдвиг_углов[i]
+  }
+
+  let old_a = [a[0]+Math.sin(углы[углы.length-1])*ширина_ленточки, a[1]+Math.cos(углы[углы.length-1])*ширина_ленточки]
+
+  let f = frameCount * влияние_времени
+  let r = col(углы[углы.length-1]+f)
+  let g = col(углы[углы.length-2]+f)
+  let b = col(углы[углы.length-3]+f)
+
+  pg.stroke(r,g,b);
+  pg.line(a[0], a[1], old_a[0], old_a[1]); // для P2D
+  // pg.line(a[0]-sW*0.5, a[1]-sH*0.5, old_a[0]-sW*0.5, old_a[1]-sH*0.5); // для WEBGL
+
   image(pg, 0, 0, width, height)
 }
 
