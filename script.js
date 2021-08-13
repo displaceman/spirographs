@@ -30,7 +30,7 @@ function col(n){
 
 function setup() {
 
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(, windowHeight)
 
   // noCursor() // Скрывает курсор
   frameRate(60) // количество кадров в секунду
