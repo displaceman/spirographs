@@ -7,7 +7,8 @@ let сдвиг_углов = []
 let длины_сегментов = []
 let количество_сегментов = 12 
 let диапазон_сдвига_углов = 0.005
-let диапазон_длины_сегментов = 80
+let kef = Math.min(screen.width, screen.height) / Math.max(screen.width, screen.height)
+let диапазон_длины_сегментов = 80 * kef
 let ширина_ленточки = 80
 let влияние_времени = 0.01
 let скорость_воспроизведения = 500
@@ -31,6 +32,8 @@ function setup() {
   pg.background(255)
   pg.strokeWeight(1)
 }
+
+
 
 function draw() {
   for (let i = 0; i < скорость_воспроизведения; i++) {
