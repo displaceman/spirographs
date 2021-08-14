@@ -5,11 +5,12 @@ let pg
 let углы = []
 let сдвиг_углов = []
 let длины_сегментов = []
-let количество_сегментов = 12 
+let количество_сегментов = Math.floor(Math.random() * 17) + 3;
 let диапазон_сдвига_углов = 0.005
+let max_time = 120
 let kef = Math.min(screen.width, screen.height) / Math.max(screen.width, screen.height)
-let диапазон_длины_сегментов = 80 * kef
-let ширина_ленточки = 80
+let диапазон_длины_сегментов = 1400 * kef / количество_сегментов + количество_сегментов*2
+let ширина_ленточки = 100 * kef
 let влияние_времени = 0.01
 let скорость_воспроизведения = 500
 for (let i = 0; i < количество_сегментов; i++) {
@@ -52,6 +53,7 @@ function draw() {
   }
 
   image(pg, 0, 0, width, height);
+  if (frameCount % max_time == 0) {onclick()}
 }
 
 
@@ -62,6 +64,8 @@ function windowResized() {
 }
 
 window.onclick = function onclick() {
+  количество_сегментов = Math.floor(Math.random() * 17) + 3;
+  диапазон_длины_сегментов = 1400 * kef / количество_сегментов + количество_сегментов*2
   углы = []
   сдвиг_углов = []
   длины_сегментов = []
